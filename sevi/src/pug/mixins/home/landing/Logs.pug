@@ -1,0 +1,95 @@
+append variables
+  -
+    
+    var logs = trackerSet;
+   
+    var a = 1;
+    
+
+   
+
+
+
+mixin ProgressingRow(track, index)
+    .accordion-item.border.border-x-0.border-bottom-0.border-200
+      .accordion-button(role='button' data-bs-toggle='collapse'  class=index == 0 ? false : 'collapsed'  data-bs-target=`#collapse${track.task}` aria-expanded='true' aria-controls=`collapse${track.task}`)
+       .row.w-100.justify-content-center
+        .col-12.col-sm-1.text-start  
+          mb-0.font-ase.fw-bold=a++
+
+
+        .col-12.col-sm-11.text-start  
+          h5.mb-3=track
+        
+        
+
+
+mixin NewTask 
+  .accordion-item.border.border-x-0.border-bottom-0.border-200
+    .accordion-button(role='button' data-bs-toggle='collapse'  class=index == 0 ? false : 'collapsed'  data-bs-target=`#collapseaddtask` aria-expanded='true' aria-controls=`collapseaddtask`)
+      .row.w-100.justify-content-center
+        .col-12.col-sm-2.text-start  
+          img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/add.png` width="80" )
+        .col-8.col-sm-10.text-start           
+          h5.mb-0.font-base.fw-bold 
+             
+                
+  .accordion-collapse.collapse.shadow-lg(id=`collapseaddtask` class=index == 0 ? 'show' : false  aria-labelledby=`headingaddtask`  data-bs-parent='#accordionExample')
+    .accordion-body 
+      .row.justify-content-center-center
+        form(action="" method="GET" id="addLog")
+          input.form-control.border-200(type='hidden' name="page" value="logs")
+          input.form-control.border-200(type='hidden' name="act" value="add" )
+          input.form-control.border-200(type='hidden' value=time  name="time" id="time_add" )
+          input.form-control.border-200(type='hidden'  name="log" id="log_add" )
+          
+
+        .col-4.col-sm-2.text-end
+          input.form-control.border-200(type='text' value=time  onchange='document.getElementById("time_add").value=this.value;' )
+        .col-4.col-sm-8.text-end
+          input.form-control.border-200(type='text' onchange='document.getElementById("log_add").value=this.value;' )
+             
+        .col-4.col-sm-1.text-end  
+          img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/play.png` width="80" onclick='document.getElementById("addLog").submit()')
+          
+
+       
+
+
+            
+      
+mixin Logs
+
+  
+  
+  +Section.py-8#books
+    .row.justify-content-center
+      .col-md-8.col-lg-6.text-center.mb-7
+        h1.fw-semi-bold.text-1100 Logs
+        h1.fw-semi-bold.text-1100 #{now}
+    h3.fw-semi-bold.text 
+    h3.fw-semi-bold.text New Logs
+    +NewTask 
+    h3.fw-semi-bold.text Logs
+      #accordionExample.accordion
+        each log, index in logs.reverse()
+          +ProgressingRow( log, index)
+    
+   
+    
+   
+  
+            
+  
+
+
+
+
+
+
+   
+
+
+
+
+

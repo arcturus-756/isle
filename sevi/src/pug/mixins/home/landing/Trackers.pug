@@ -1,0 +1,143 @@
+append variables
+  -
+    var tasks= arr; 
+    var tracks = trackerSet;
+    var progress = trackerSet.inProgress;
+    var blocks = trackerSet.tracks;
+    var a = 1;
+    
+
+   
+
+mixin RemainingTaskRow(task, index)
+    .accordion-item.border.border-x-0.border-bottom-0.border-200
+      .accordion-button(role='button' data-bs-toggle='collapse'  class=index == 0 ? false : 'collapsed'  data-bs-target=`#collapse${task.id}` aria-expanded='true' aria-controls=`collapse${task.id}`)
+       .row.w-100.justify-content-center
+          .col-12.col-sm-1.text-start  
+             h5.mb-0.font-ase.fw-bold=a++
+
+          .col-12.col-sm-2.text-start  
+            h5.mb-0.font-ase.fw-bold=task.desc
+          .col-8.col-sm-3.text-start           
+            h5.mb-0.font-base.fw-bold=task.parent
+
+
+
+mixin ProgressingRow(track, index)
+    .accordion-item.border.border-x-0.border-bottom-0.border-200
+      .accordion-button(role='button' data-bs-toggle='collapse'  class=index == 0 ? false : 'collapsed'  data-bs-target=`#collapse${track.task}` aria-expanded='true' aria-controls=`collapse${track.task}`)
+       .row.w-100.justify-content-center
+        form(action="" method="GET" id="stopTask_"+index)
+          input.form-control.border-200(type='hidden' name="page" value="todaysTrackers")
+          input.form-control.border-200(type='hidden' name="act" value="stop" id="act_"+index)
+          input.form-control.border-200(type='hidden' name="task" value=track.task id="task_"+index)
+          input.form-control.border-200(type='hidden' name="cat" value=track.cat id="cat_"+index )
+          input.form-control.border-200(type='hidden' name="stop_time" value=time id="time_"+index )
+        .col-12.col-sm-1.text-start  
+          h5.mb-0.font-ase.fw-bold=a++
+
+
+        .col-12.col-sm-1.text-start  
+          h5.mb-0.font-ase.fw-bold=track.start_time
+        .col-8.col-sm-2.text-start           
+          h5.mb-0.font-base.fw-bold=track.task
+        .col-8.col-sm-3.text-start           
+          h5.mb-0.font-base.fw-bold=track.cat
+        .col-4.col-sm-2.text-end
+          input.form-control.border-200(type='text' value=time onchange='document.getElementById("time_'+index+'").value=this.value;' )
+        .col-4.col-sm-1.text-end  
+          img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/stop.png` width="80" onclick='document.getElementById("act_'+index+'").value="Stop";document.getElementById("stopTask_'+index+'").submit()')
+
+
+
+mixin NewTask 
+  .accordion-item.border.border-x-0.border-bottom-0.border-200
+    .accordion-button(role='button' data-bs-toggle='collapse'  class=index == 0 ? false : 'collapsed'  data-bs-target=`#collapseaddtask` aria-expanded='true' aria-controls=`collapseaddtask`)
+      .row.w-100.justify-content-center
+        .col-12.col-sm-2.text-start  
+          img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/add.png` width="80" )
+        .col-8.col-sm-10.text-start           
+          h5.mb-0.font-base.fw-bold 
+             
+                
+  .accordion-collapse.collapse.shadow-lg(id=`collapseaddtask` class=index == 0 ? 'show' : false  aria-labelledby=`headingaddtask`  data-bs-parent='#accordionExample')
+    .accordion-body 
+      .row.justify-content-center-center
+        form(action="" method="GET" id="startTask")
+          input.form-control.border-200(type='hidden' name="page" value="todaysTrackers")
+          input.form-control.border-200(type='hidden' name="act" value="start" id="act_addTracker")
+          input.form-control.border-200(type='hidden' name="task"  id="task_addTracker")
+          input.form-control.border-200(type='hidden' name="cat" id="cat_addTracker" )
+          input.form-control.border-200(type='hidden'  value=time name="start_time" id="time_addTracker" )
+          
+
+        .col-4.col-sm-6.text-end
+          input.form-control.border-200(type='text' onchange='document.getElementById("task_addTracker").value=this.value;' )
+        .col-4.col-sm-3.text-end
+          input.form-control.border-200(type='text' onchange='document.getElementById("cat_addTracker").value=this.value;' )
+        .col-4.col-sm-2.text-end
+          input.form-control.border-200(type='text' value=time onchange='document.getElementById("time_addTracker").value=this.value;' )
+              
+        .col-4.col-sm-1.text-end  
+          img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/play.png` width="80" onclick='document.getElementById("act_addTracker").value="Start";document.getElementById("startTask").submit()')
+          
+mixin CompletedRow(track, index)
+    .accordion-item.border.border-x-0.border-bottom-0.border-200
+      .accordion-button(role='button' data-bs-toggle='collapse'  class=index == 0 ? false : 'collapsed'  data-bs-target=`#collapse${track.task}` aria-expanded='true' aria-controls=`collapse${track.task}`)
+       .row.w-100.justify-content-center
+        
+        .col-12.col-sm-1.text-start  
+          h5.mb-0.font-ase.fw-bold=a++
+
+
+        .col-12.col-sm-2.text-start  
+          h5.mb-0.font-ase.fw-bold=track.start_time
+        .col-8.col-sm-3.text-start           
+          h5.mb-0.font-base.fw-bold=track.task
+        .col-8.col-sm-3.text-start           
+          h5.mb-0.font-base.fw-bold=track.cat
+        .col-4.col-sm-1.text-end  
+          h5.mb-0.font-ase.fw-bold=track.stop_time
+       
+
+
+            
+      
+mixin Trackers
+
+  
+  
+  +Section.py-8#books
+    .row.justify-content-center
+      .col-md-8.col-lg-6.text-center.mb-7
+        h1.fw-semi-bold.text-1100  Tasks
+        h1.fw-semi-bold.text-1100 #{now}
+    h3.fw-semi-bold.text 
+    h3.fw-semi-bold.text New Task
+    +NewTask 
+    h3.fw-semi-bold.text Progressing Task
+      #accordionExample.accordion
+        each track, index in progress
+          +ProgressingRow( track, index)
+    h3.fw-semi-bold.text Tracked Time Blocks
+      #accordionExample.accordion
+        each track, index in  blocks
+          +CompletedRow(track, index)
+   
+    
+   
+  
+            
+  
+
+
+
+
+
+
+   
+
+
+
+
+

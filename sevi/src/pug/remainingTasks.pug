@@ -1,0 +1,22 @@
+extends layouts/LayoutTheme
+include mixins/home/landing/HeroHeader
+include mixins/home/landing/Resources
+include mixins/home/landing/OurLibraries
+include mixins/home/landing/BestSeller
+include mixins/home/landing/Cta
+include mixins/home/landing/Footer
+include mixins/home/landing/RemainingTasksTable
+
+
+append variables
+  - var currentPage = 'index'
+  - var tilej = titlej
+prepend scripts
+  
+  
+append content
+  +RemainingTasksTable
+  +HeroHeader
+  +Resources
+ 
+  +Footer

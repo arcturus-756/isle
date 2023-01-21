@@ -1,0 +1,102 @@
+append variables
+  -
+    var tasks= arr; 
+    var a = 1;
+    
+
+   
+
+mixin RemainingTaskRow(task, index)
+  if (task.status=="Draft" || task.status=="Targetted" )
+    .accordion-item.border.border-x-0.border-bottom-0.border-200
+      .accordion-button(role='button' data-bs-toggle='collapse'  class=index == 0 ? false : 'collapsed'  data-bs-target=`#collapse${task.id}` aria-expanded='true' aria-controls=`collapse${task.id}`)
+       .row.w-100.justify-content-center
+          .col-12.col-sm-1.text-start  
+             h5.mb-0.font-ase.fw-bold=a++
+
+          .col-12.col-sm-2.text-start  
+            h5.mb-0.font-ase.fw-bold=task.sched_time
+          .col-8.col-sm-3.text-start           
+            h5.mb-0.font-base.fw-bold=task.id
+
+      
+          .col-4.col-sm-2.text-end  
+            if task.status=="Draft"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/rounded-square.png` width="80"  alt='...')
+            if task.status=="Done"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/done.png` width="80"  alt='...')
+            if task.status=="Cancelled"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/cancel.png` width="80"  alt='...')
+            if task.status=="Targetted"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/target.png` width="80"  alt='...')
+            if task.status=="Outsourced"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/round.png` width="80"  alt='...')
+           
+          if (task.status=="Draft" || task.status=="Targetted")
+            .col-4.col-sm-5.text-end  
+               
+          else
+            .col-4.col-sm-2.text-start
+              h5.mb-0.font-ase.fw-bold=task.end_time
+            .col-4.col-sm-3.text-end  
+              h5.mb-0.font-ase.fw-bold=task.done_by
+    .accordion-collapse.collapse.shadow-lg(id=`collapse${task.id}` class=index == 0 ? 'show' : false  aria-labelledby=`heading${task.id}`  data-bs-parent='#accordionExample')
+      .accordion-body 
+        .row.justify-content-center-center
+          form(action="" method="GET" id="form_"+task.id)
+            input.form-control.border-200(type='hidden' name="page" value="remaining_tasks")
+            input.form-control.border-200(type='hidden' name="name" value=task.id)
+            input.form-control.border-200(type='hidden' name="status" id="status_"+task.id)
+            input.form-control.border-200(type='hidden' name="time" id="time_"+task.id value=time)
+            input.form-control.border-200(type='hidden' name="doneby" id="doneby_"+task.id value="Me")
+
+          if (task.status=="Draft" || task.status=="Targetted" || task.status=="Rescheduled")
+            .col-4.col-sm-2.text-end
+               input.form-control.border-200(type='text' value=time onchange='document.getElementById("time_'+task.id+'").value=this.value;' )
+            .col-4.col-sm-2.text-end
+               select#propertyType.select.form-control.input-lg(name='propertyType' onchange='document.getElementById("doneby_'+task.id+'").value=this.value;' )
+                 option(value="Me", selected= true) Me
+                 option(value="Papa") Papa
+                 option(value="Mumma") Mumma
+                 option(value="Hemant") Hemant
+                 option(value="Mallika") Mallika
+                 option(value="School") School
+              
+            .col-4.col-sm-1.text-end  
+              if task.status=="Draft"
+                  img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/target.png` width="80" onclick='document.getElementById("status_'+task.id+'").value="Targetted";document.getElementById("form_'+task.id +'").submit()')
+            .col-4.col-sm-1.text-end   
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/done.png` width="80" onclick='document.getElementById("status_'+task.id+'").value="Done";document.getElementById("form_'+task.id +'").submit()')
+            .col-4.col-sm-1.text-end
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/cancel.png` width="80" onclick='document.getElementById("status_'+task.id+'").value="Cancelled";document.getElementById("form_'+task.id +'").submit()')  
+            
+            .col-4.col-sm-1.text-end  
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/reschedule.png` width="80" onclick='document.getElementById("status_'+task.id+'").value="Rescheduled";document.getElementById("form_'+task.id +'").submit()')
+            .col-4.col-sm-1.text-end  
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/round.png` width="80" onclick='document.getElementById("status_'+task.id+'").value="Outsourced";document.getElementById("form_'+task.id +'").submit()')
+        
+            
+           
+
+
+            
+      
+mixin RemainingTasksTable
+  +Section.py-8#books
+    .row.justify-content-center
+      .col-md-8.col-lg-6.text-center.mb-7
+        h1.fw-semi-bold.text-warning Date
+        h1.fw-semi-bold.text-1100  Tasks
+        h1.fw-semi-bold.text-1100 #{now}
+      .col-lg-9
+        #accordionExample.accordion
+          each task, index in tasks
+            +RemainingTaskRow( task, index)
+            
+      .col-lg-12.d-flex.justify-content-center
+        button.btn.btn-lg.btn-primary.rounded-pill.font-base(type='submit') Find More   
+
+
+
+
+

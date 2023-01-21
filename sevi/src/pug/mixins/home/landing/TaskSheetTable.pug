@@ -1,0 +1,126 @@
+append variables
+  -
+    var tasks= arr; 
+    
+
+            
+
+
+   
+
+mixin DaysTaskRow(task, index)
+  .accordion-item.border.border-x-0.border-bottom-0.border-200
+     
+      .accordion-button(role='button' data-bs-toggle='collapse'  class=index == 0 ? false : 'collapsed'  data-bs-target=`#collapse${task.id}` aria-expanded='true' aria-controls=`collapse${task.id}`)
+       .row.w-100.justify-content-center
+          .col-12.col-sm-2.text-start  
+            h5.mb-0.font-ase.fw-bold=task.sched_time
+          .col-8.col-sm-3.text-start           
+            h5.mb-0.font-base.fw-bold=task.id
+
+      
+          .col-4.col-sm-2.text-end  
+            if task.status=="Draft"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/rounded-square.png` width="80"  alt='...')
+            if task.status=="Done"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/done.png` width="80"  alt='...')
+            if task.status=="Cancelled"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/cancel.png` width="80"  alt='...')
+            if task.status=="Targetted"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/target.png` width="80"  alt='...')
+           
+          if (task.status=="Draft" || task.status=="Targetted")
+            .col-4.col-sm-5.text-end  
+               
+          else
+            .col-4.col-sm-2.text-start
+              h5.mb-0.font-ase.fw-bold=task.end_time
+            .col-4.col-sm-3.text-end  
+              h5.mb-0.font-ase.fw-bold=task.done_by
+  .accordion-collapse.collapse.shadow-lg(id=`collapse${task.id}` class=index == 0 ? 'show' : false  aria-labelledby=`heading${task.id}`  data-bs-parent='#accordionExample')
+      .accordion-body 
+        .row.justify-content-center-center
+          form(action="" method="GET" id="form_"+task.id)
+            input.form-control.border-200(type='hidden' name="page" value="taskSheet")
+            input.form-control.border-200(type='hidden' name="type" value="remaining")
+            input.form-control.border-200(type='hidden' name="limit" value="2")
+            input.form-control.border-200(type='hidden' name="name" value=task.id)
+            input.form-control.border-200(type='hidden' name="status" id="status_"+task.id)
+            input.form-control.border-200(type='hidden' name="time" id="time_"+task.id value=time)
+            input.form-control.border-200(type='hidden' name="doneby" id="doneby_"+task.id value="Me")
+
+          if (task.status=="Draft" || task.status=="Targetted" || task.status=="Rescheduled")
+            .col-4.col-sm-2.text-end
+               input.form-control.border-200(type='text' value=time onchange='document.getElementById("time_'+task.id+'").value=this.value;' )
+            .col-4.col-sm-2.text-end
+               select#propertyType.select.form-control.input-lg(name='propertyType' onchange='document.getElementById("doneby_'+task.id+'").value=this.value;' )
+                 option(value="Me", selected= true) Me
+                 option(value="Papa") Papa
+                 option(value="Mumma") Mumma
+                 option(value="Hemant") Hemant
+                 option(value="Mallika") Mallika
+                 option(value="School") School
+              
+            .col-4.col-sm-1.text-end  
+              if task.status=="Draft"
+                  img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/target.png` width="80" onclick='document.getElementById("status_'+task.id+'").value="Targetted";document.getElementById("form_'+task.id +'").submit()')
+            .col-4.col-sm-1.text-end   
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/done.png` width="80" onclick='document.getElementById("status_'+task.id+'").value="Done";document.getElementById("form_'+task.id +'").submit()')
+            .col-4.col-sm-1.text-end
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/cancel.png` width="80" onclick='document.getElementById("status_'+task.id+'").value="Cancelled";document.getElementById("form_'+task.id +'").submit()')  
+            
+            .col-4.col-sm-1.text-end  
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/reschedule.png` width="80" onclick='document.getElementById("status_'+task.id+'").value="Rescheduled";document.getElementById("form_'+task.id +'").submit()')
+            
+            
+           
+
+
+            
+      
+mixin TaskSheetTable
+  +Section.py-8#books
+    .row.justify-content-center
+      .col-md-8.col-lg-6.text-center.mb-7
+        h1.fw-semi-bold.text-warning Date
+        h1.fw-semi-bold.text-1100  Tasks
+        h1.fw-semi-bold.text-1100 #{now}
+      .col-lg-9
+      
+        
+        .accordion-item.border.border-x-0.border-bottom-0.border-200
+          .accordion-button(role='button' data-bs-toggle='collapse'  class=index == 0 ? false : 'collapsed'  data-bs-target=`#collapseaddtask` aria-expanded='true' aria-controls=`collapseaddtask`)
+            .row.w-100.justify-content-center
+              .col-12.col-sm-2.text-start  
+                img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/add.png` width="80" )
+              .col-8.col-sm-10.text-start           
+                h5.mb-0.font-base.fw-bold 
+             
+                
+        .accordion-collapse.collapse.shadow-lg(id=`collapseaddtask` class=index == 0 ? 'show' : false  aria-labelledby=`headingaddtask`  data-bs-parent='#accordionExample')
+          .accordion-body 
+            .row.justify-content-center-center
+              form(action="" method="GET" id="form_addTask")
+                input.form-control.border-200(type='hidden' name="page" value="today_tasks")
+                input.form-control.border-200(type='hidden' name="name"  id="name_addTask")
+                input.form-control.border-200(type='hidden' name="time" id="time_addTask" )
+                input.form-control.border-200(type='hidden' name="action" id="act_addTask" )
+
+              .col-4.col-sm-6.text-end
+                input.form-control.border-200(type='text' onchange='document.getElementById("name_addTask").value=this.value;' )
+              .col-4.col-sm-3.text-end
+                input.form-control.border-200(type='text' onchange='document.getElementById("time_addTask").value=this.value;' )
+              
+              .col-4.col-sm-1.text-end  
+                img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/add.png` width="80" onclick='document.getElementById("act_addTask").value="Add";document.getElementById("form_addTask").submit()')
+              .col-4.col-sm-1.text-end
+                img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/cancel.png` width="80" onclick='document.getElementById("act_addTask").value="Cancel";document.getElementById("form_addTask").submit()')  
+              
+        #accordionExample.accordion
+          each task, index in tasks
+            +DaysTaskRow( task, index)
+            
+      
+
+
+

@@ -1,0 +1,63 @@
+append variables
+  -
+    var tasks= arr; 
+    
+
+   
+
+mixin DailyTaskRow(task, index)
+  .accordion-item.border.border-x-0.border-bottom-0.border-200
+       .row.w-100.justify-content-center
+          .col-12.col-sm-2.text-start  
+            h5.mb-0.font-ase.fw-bold=task.sched_time
+          .col-8.col-sm-3.text-start           
+            h5.mb-0.font-base.fw-bold=task.id
+
+      
+          .col-4.col-sm-2.text-end  
+            if task.status=="Draft"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/rounded-square.png` width="80"  alt='...')
+
+          .col-4.col-sm-1.text-end  
+            if task.status=="Draft"
+              form(action="" method="GET")
+                input.form-control.border-200(type='hidden' name="page" value="today_tasks")
+                input.form-control.border-200(type='hidden' name="name" value=task.id)
+                input.form-control.border-200(type='hidden' name="status" value="Target")
+                img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/target.png` width="80" onclick='this.closest("form").submit()')
+          .col-4.col-sm-1.text-end  
+            if task.status=="Draft"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/done.png` width="80")
+          .col-4.col-sm-1.text-end  
+            if task.status=="Draft"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/cancel.png` width="80")
+            
+          .col-4.col-sm-1.text-end  
+            if task.status=="Draft"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/reschedule.png` width="80" )
+          .col-4.col-sm-1.text-end  
+            if task.status=="Draft"
+              img.img-fluid.d-block.mx-auto.mx-sm-0(src=`${CWD}/assets/img/icons/round.png` width="80" )
+
+
+            
+      
+mixin DailyTasksTable
+  +Section.py-8#books
+    .row.justify-content-center
+      .col-md-8.col-lg-6.text-center.mb-7
+        h1.fw-semi-bold.text-warning Daily
+          span.text-1100  Tasks
+        
+      .col-lg-9
+        #accordionExample.accordion
+          each task, index in tasks
+            +DailyTaskRow( task, index)
+            
+      .col-lg-12.d-flex.justify-content-center
+        button.btn.btn-lg.btn-primary.rounded-pill.font-base(type='submit') Find More   
+
+
+
+
+
